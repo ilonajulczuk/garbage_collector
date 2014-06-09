@@ -57,7 +57,11 @@ function help() {
 }
 
 function cleanup_before_exit () {
-info "Cleaning up. Done"
+info "Cleaning up."
+
+find "${TRASHBIN}" -mtime +1 -exec rm {} \;
+
+info "Done"
 }
 
 
