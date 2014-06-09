@@ -156,15 +156,6 @@ function main {
         esac
     done
 
-    # debug mode
-    if [ "${arg_v}" = "1" ]; then
-        # turn on tracing
-        set -x
-        # output debug messages
-        LOG_LEVEL="7"
-    fi
-
-
     mkdir -p ${TRASHBIN}       
 
     if [ "${arg_h}" = 1 ]; then
