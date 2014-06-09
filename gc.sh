@@ -67,9 +67,10 @@ TRASHBIN="/tmp/crap"
 
 
 function process_file() {
-    filename="${1}"
+    name="${1}"
 
-    if [ -f "$filename" ] ; then
+    if [ -f "$name" ] ; then
+        filename="$name"
         info "Moving filename '${filename}' to trashbin"   
         if [[ filename = *.tar.gz ]] ; then
             info "File already compressed"
@@ -81,6 +82,14 @@ function process_file() {
             rm "${filename}"
         fi
         info "File ${filename} moved!"
+    elif [ -d "$name" ] ; then
+        dirname="$name"
+        info "Moving directory '${dirname}' to trashbin"   
+        info "Compressing directory"
+        tar czvf "${dirname}.tar.gz" "${dirname}" 
+        mv "${dirname}.tar.gz" "${TRASHBIN}"
+        rm -r "${dirname}"
+        info "Directory ${dirname} moved!"
     else
         error "Can't find file '${filename}' on disk"
     fi
