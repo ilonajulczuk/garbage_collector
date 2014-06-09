@@ -118,7 +118,7 @@ function process_file() {
 trap cleanup_before_exit EXIT
 
 # Parse commandline options
-#####################################################################
+####################################################
 
 file=""
 verbose=0
@@ -156,14 +156,6 @@ do
             ;;
     esac
 done
-
-# Suppose some options are required. Check that we got them.
-
-#if [ ! "$file" ]; then
-#    printf >&2 "ERROR: option '--file FILE' not given. See --help\n"
-#    exit 1
-#fi
-
 
 # debug mode
 if [ "${arg_v}" = "1" ]; then
