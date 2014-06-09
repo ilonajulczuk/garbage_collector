@@ -7,9 +7,21 @@
 # Comandline options
 
 read -r -d '' usage <<-'EOF'
+Possible arguments:
+
 -f [arg] --file [arg] --file=[arg] Filename to redirect output.
 -v --verbose                       Verbose mode
 -h --help                          Help page
+EOF
+
+read -r -d '' examples <<-'EOF'
+Examples:
+
+./gc.sh myfile
+./gc.sh -v myfile
+./gc.sh mydirectory
+./gc.sh -f redirect_output_to_this_filename myfile_to_remove
+echo "file.txt" | ./gc.sh
 EOF
 
 # set magic variables for current FILE & DIR
@@ -51,7 +63,11 @@ function info () { [ "${verbose}" -ge 1 ] && print_log "$(_fmt info) ${@}"|| tru
 function debug () { [ "${verbose}" -ge 2 ] && print_log "$(_fmt debug) ${@}" || true; }
 
 function help() {
+    echo "Garbage collector is a simple bash script which can be used to delete files in a safe and simple way." 1>&2
+    echo ""
     echo "${usage}" 1>&2
+    echo "" 1>&2
+    echo "${examples}" 1>&2
     echo "" 1>&2
     exit 1
 }
@@ -169,7 +185,11 @@ if [ $# -gt 0 ] ; then
         process_file "$filename"
     done
 else
-    IFS=$'\n' read -d -t 1'' -r -a filenames
+    IFS=$'\n' read -t 1 -d '' -r -a filenames
+    if [ "${#filenames}" -eq 0 ]; then
+        help
+    fi
+
     for filename in "${filenames[@]}"; do
         process_file "$filename"
     done
